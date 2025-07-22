@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🌟Auristar 遊戲 商城 專業客服機器人</title>
+<style>
+  /* 全局樣式 */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(-45deg, #1e1e2f, #202042, #2a2a5a, #1e1e2f);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+  }
+  @keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+  header {
+    padding: 15px 20px;
+    background: rgba(0,0,0,0.7);
+    font-size: 1.2rem;
+    font-weight: bold;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header small {
+    font-weight: normal;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  #chatbox {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+    margin: 10px auto 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  #messages {
+    flex: 1;
+    padding: 15px 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+  }
+  .message {
+    max-width: 75%;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 20px;
+    position: relative;
+    word-wrap: break-word;
+    line-height: 1.3;
+    white-space: pre-wrap;
+  }
+  .message.user {
+    background: #4e86ff;
+    align-self: flex-end;
+    border-radius: 20px 20px 0 20px;
+    text-align: right;
+    direction: rtl;
+  }
+  .message.user > .text {
+    direction: ltr;
+    display: inline-block;
+  }
+  .message.bot {
+    background: #333;
+    align-self: flex-start;
+    border-radius: 20px 20px 20px 0;
+    text-align: left;
+  }
+  .message .meta {
+    font-size: 0.75rem;
+    color: #a0a0a0;
+    margin-top: 4px;
+    user-select: none;
+  }
+  .thinking {
+    font-style: italic;
+    opacity: 0.6;
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
+  }
+  #inputArea {
+    display: flex;
+    padding: 15px 20px;
+    background: rgba(0,0,0,0.85);
+    border-top: 1px solid #555;
+  }
+  #username {
+    width: 150px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin-right: 10px;
+    background: #222;
+    color: white;
+  }
+  #userinput {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: #222;
+    color: white;
+  }
+  #sendBtn {
+    background: #4e86ff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0 25px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  #sendBtn:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+  #quickButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    padding: 8px 10px;
+    border-radius: 0 0 20px 20px;
+    max-width: 700px;
+    margin: 0 auto 10px;
+  }
+  .quick-btn {
+    background: #4e86ff;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    margin: 5px 7px;
+    padding: 8px 15px;
+    font-size: 14px;
+    user-select: none;
+    transition: background 0.3s ease;
+  }
+  .quick-btn:hover {
+    background: #1e50ff;
+  }
+  /* 禁用提示 */
+  #disableAlert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4444cc;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+  }
+  #disableAlert.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+</head>
+<body>
+<header>
+  🌟Auristar 遊戲 商城 專業客服機器人
+  <small>製作人/訓練者：金佐陳</small>
+</header>
+
+<div id="chatbox" role="main" aria-label="聊天室">
+  <div id="messages" aria-live="polite" aria-relevant="additions"></div>
+  <div id="quickButtons" aria-label="快捷選項"></div>
+  <div id="inputArea">
+    <input id="username" type="text" placeholder="請輸入名稱..." aria-label="使用者名稱" autocomplete="off" />
+    <input id="userinput" type="text" placeholder="請輸入訊息..." aria-label="訊息輸入" autocomplete="off" />
+    <button id="sendBtn" disabled>送出</button>
+  </div>
+</div>
+
+<div id="disableAlert" role="alert" aria-live="assertive"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  const webhookUrl = 'https://discord.com/api/webhooks/1397161969194373151/1-rG0NXQ7c8B-HIPXm2_yvTThVBvFs-i0-2T5gnXRLSUoOzU_qJl93y6wBVY9fZTX_Be';
+
+  const messages = document.getElementById('messages');
+  const usernameInput = document.getElementById('username');
+  const userInput = document.getElementById('userinput');
+  const sendBtn = document.getElementById('sendBtn');
+  const quickButtonsDiv = document.getElementById('quickButtons');
+  const disableAlert = document.getElementById('disableAlert');
+
+  // 初始歡迎訊息
+  const welcomeMsg = '歡迎來到 Auristar商城 專業人機客服系統，請輸入你的問題或關鍵字。';
+
+  // 關鍵字與回覆資料
+  const responses = [
+    { keywords: ['嗨', '哈囉', '你好', 'hi', 'hellow', '早安', '午安', '晚安', '安安', '在嗎', '有人嗎'], reply: '您好！請問需要什麼幫助？' },
+    { keywords: ['?', '蝦', '蛤', 'ㄏㄚˊ', '什麼', '聽無', '聽不懂', '不懂', '不太懂', '什麼意思', '看不懂', '搞不懂'], reply: '輸入你的問題來讓我回答，就可以解開你心中的疑惑歐~~' },
+    { keywords: ['買', '購買', '商品', '品項', '價格'], reply: '你想要查詢什麼的價格或是購買什麼東西呢？請說明' },
+    { keywords: ['代購', '代買'], reply: '你想要查詢什麼的代購呢？' },
+    { keywords: ['roblox', 'ROBLOX', 'RB', 'Roblox', 'rb', '羅布克斯'], reply: '你要查詢roblox哪類商品呢？' },
+    { keywords: ['代儲'], reply: '你要哪個遊戲的代儲呢？' },
+    { keywords: ['roblox代儲', 'ROBLOX代儲', 'RB代儲', 'Roblox代儲', 'rb代儲', 'robux'], 
+      reply:
+`如要購買請說：「我要買XXX Robux」，目前只開放面額如下：
+400 Robux → NT$160
+800 Robux → NT$300
+1700 Robux → NT$600
+2500 Robux → NT$900
+4500 Robux → NT$1450
+10000 Robux → NT$2800
+22500 Robux → NT$5600` 
+    },
+    { keywords: ['培養花園', 'gag', 'GAG', 'grow a garden', 'Grow a garden', 'GROW A GARDEN'], 
+      reply: `
+ 🌱 商品列表
+📦 EXOTIC ZEN SEED PACK
+x3（575R） ➤ NT$130
+
+x10（1699R） ➤ NT$330
+
+🥚 PREMIUM PRIMAL EGG
+x3（429R） ➤ NT$100
+
+x10（1269R） ➤ NT$250
+
+🐾 PET 寵物專區
+九尾狐 ➤ NT$1900
+
+Disco蜂 ➤ NT$400
+
+蝴蝶 ➤ NT$200
+
+女王蜂 ➤ NT$150
+
+蜻蜓 ➤ NT$200
+
+浣熊 ➤ NT$300      浣熊*10 ➤ NT$2800
+
+狐狸 ➤ NT$100
+
+殭屍雞 ➤ NT$100
+
+暴龍 ➤ NT$200
+
+雷龍 ➤ NT$100
+
+章魚 ➤ NT$200
+
+耳廓狐 ➤ NT$250
+
+月貓 ➤ NT$70
+
+血月刺蝟 ➤ NT$70
+
+
+744T植物 ➤ NT$15
+
+
+60歲寵 ➤ NT$100
+
+75歲寵 ➤ NT$150
+
+如果要購買，請直接照名稱和數量打到聊天室中。` },
+    { keywords: ['折扣', '優惠', '打折', '折價'], reply: '請見DC群 (轉移頁面到 https://discord.gg/jt4ZvhnCDQ)' },
+    { keywords: ['特殊活動', '好康', '抽獎', '抽抽樂'], reply: '請見DC群 (轉移頁面到 https://discord.gg/jt4ZvhnCDQ)' },
+    { keywords: ['官網', '官方網站'], reply: '將你轉跳到官網 (https://goldenstar8787.github.io/auristar-on-line--store-/)' },
+    { keywords: ['轉人工', '找客服'], reply: '請到DC群開單或FB找金佐陳詢問 (https://discord.gg/jt4ZvhnCDQ / https://www.facebook.com/jin.zuo.chen.2025)' },
+    { keywords: ['談合作', '合作'], reply: '請說明你要合作什麼，並提供你的商城名稱，說明完畢後請說「送出」，並到DC開單詢問' },
+    { keywords: ['互相宣傳'], reply: '請詳細說明，說明完畢後請說「送出」，並到DC開單詢問' },
+    { keywords: ['說明完畢', '送出', '完成'], 
+      reply: '紀錄已送出 將轉移頁面到 https://discord.gg/jt4ZvhnCDQ)', webhook: true },
+    { keywords: ['應徵', '面試', '代理', '徵人'], reply: '請說你的名字，和有無經驗，有經驗請說有經驗，無經驗請說無經驗' },
+    { keywords: ['有經驗', '無經驗'], reply: '請說你的年齡，能不能常發文，是否有誠文？回答完成請說「完成」' },
+    { keywords: ['回報', '我有問題', '提問', '疑問', '疑惑'], reply: '請說明你的問題，說明完成後請說：「送出」' },
+    { keywords: ['我要', '我想要'], reply: '請到訂購區訂購或到DC開單 (https://discord.gg/jt4ZvhnCDQ 和 https://goldenstar8787.github.io/auristar-on-line--store-/)' },
+    { keywords: ['再見', '掰掰', '掰'], reply: '感謝你的使用 :3' },
+    { keywords: ['幹', '你媽', '死了', '你娘', '可憐', '大便', '傻子','唐','低能'], reply: '你媽媽沒生給你腦子嗎？國小生嗎這什麼中二發言 你爸媽管不好你可以讓我管 還背後捅一刀勒 在唐什麼 可不可以講話不要跟啞巴一樣 我說10句你只會說一句 沒學好說話你要嗆人找啞巴好了 哪怕是個老奶奶講幾句你都快要哭了 別人罵完發現你字才打到一半 你就只會呃呃呃呃閉嘴呃呃呃滾說你國小都高看你了 能不能說有殺傷力的啊 還是你國小老師只教你這個好可憐喔要不要爸爸教你' },
+    { keywords: ['ha', '哈'], reply: 'hahahahahahahahahahahahahahahahahaha' },
+    { keywords: ['條款', '訂購注意事項', '訂購前注意事項', '下單注意事項', '下單前注意事項'], reply: '自行轉跳到 https://goldenstar8787.github.io/Mall-Terms/)' },
+    { keywords: ['帥', '騷', '美', '可愛', '漂亮', '結婚', '男朋友', '女朋友'], reply: '真的好臭' },
+    { keywords: ['怎麼沒', '好吧', '痾'], reply: '抱歉，開發中，可考慮轉人工' }
+  ];
+
+  // 商品資訊（快捷按鈕及回覆）
+  const productInfo = {
+    'Robux 面額': `💰 Robux 面額（常見購買額度）
+目前只開放面額如下：
+➡️ 400 Robux　→ NT$160
+➡️ 800 Robux　→ NT$300
+➡️ 1700 Robux → NT$600
+➡️ 2500 Robux → NT$900
+➡️ 4500 Robux → NT$1450
+➡️ 10000 Robux → NT$2800
+➡️ 22500 Robux → NT$5600
+📌 下單指令： 如要訂購請說你要訂購的內容並說：送出`,
+
+    'Grow a Garden｜培養花園': `🌱 商品包裝與價格
+種子包（Seed Pack）
+EXOTIC ZEN SEED PACK x3（575R）
+EXOTIC ZEN SEED PACK x10（1699R）
+寵物蛋（Egg）
+PREMIUM PRIMAL EGG x3（429R）
+PREMIUM PRIMAL EGG x10（1269R）
+🐾 PET 寵物專區
+九尾狐 ➤ NT$1900
+
+Disco蜂 ➤ NT$400
+
+蝴蝶 ➤ NT$200
+
+女王蜂 ➤ NT$150
+
+蜻蜓 ➤ NT$200
+
+浣熊 ➤ NT$300      浣熊*10 ➤ NT$2800
+
+狐狸 ➤ NT$100
+
+殭屍雞 ➤ NT$100
+
+暴龍 ➤ NT$200
+
+雷龍 ➤ NT$100
+
+章魚 ➤ NT$200
+
+耳廓狐 ➤ NT$250
+
+月貓 ➤ NT$70
+
+血月刺蝟 ➤ NT$70
+
+
+744T植物 ➤ NT$15
+
+
+60歲寵 ➤ NT$100
+
+75歲寵 ➤ NT$150
+📌 下單指令： 如要訂購請說你要訂購的內容並說：送出`,
+
+    '競爭者': `競爭者
+
+🎁 皮膚箱 Skin Cases
+📦 Skin Case 1 x1 → NT$70
+📦 Skin Case 2 x1 → NT$70
+📦 Skin Case 3 x1 → NT$70
+
+🎟️ 通行證組合包 Pass Bundles
+💥 RPG 組合包 → NT$60
+🔋 能源組合包 (1299R) → NT$280
+👽 外星組合包 (649R) → NT$160
+💉 醫療組合包 (249R) → NT$80
+🛡️ 重型組合包 (1899R) → NT$410
+🎖️ 經典組合包 (1149R) → NT$260
+🔫 普通武器組合包 (999R) → NT$220
+🟣 像素組合包 (888R) → NT$200
+🎯 初學者組合包 (49R) → NT$40
+🔑 超級鑰匙組合包 (2199R) → NT$500
+👑 傳奇鑰匙組合包 (4999R) → NT$1000
+📌 下單指令： 如要訂購請說你要訂購的內容並說：送出`,
+
+    'bf永久果實': `🍇 果實能力
+🔥 火焰 → NT$120
+🐦 獵鷹 → NT$210
+❄️ 冰凍 → NT$150
+🏖️ 沙子 → NT$170
+🌑 黑暗 → NT$190
+💎 鑽石 → NT$210
+⚡ 閃閃 → NT$240
+🍉 橡膠 → NT$250
+🌀 創造 → NT$340
+💀 復活 → NT$270
+🌋 岩漿 → NT$280
+🌍 地震 → NT$300
+🙏 人佛 → NT$320
+❤️ 愛情 → NT$330
+🌐 線線 → NT$340
+🔊 聲音 → NT$360
+🚪 門門 → NT$380
+🦅 鳳凰 → NT$380
+⚡ 響雷 → NT$400
+🐾 爪子 → NT$410
+❄️ 雪雪 → NT$420
+🌍 重力 → NT$440
+🐘 猛瑪 → NT$440
+🦖 暴龍 → NT$440
+🍞 麵糰 → NT$450
+🌑 影子 → NT$460
+☠️ 毒液 → NT$470
+🎮 控制 → NT$480
+💨 瓦斯 → NT$490
+👻 靈魂 → NT$500
+🐆 獵豹 → NT$600
+👹 雪怪 → NT$600
+🐾 九尾 → NT$800
+🐉 龍龍 → NT$1000
+📌 下單指令： 如要訂購請說你要訂購的內容並說：送出`,
+
+    'bf通行證和果倉': `通行證和果倉
+💎 通行證
+🔁 雙倍掉落物 → NT$90
+🚤 快船 → NT$90
+💰 雙倍金錢 → NT$110
+🧠 雙倍精通 → NT$110
+🗡️ 黑刀 → NT$250
+🔎 果探 → NT$550
+
+🍊 果倉
+📦 果倉 x1 → NT$100
+📦 果倉 x3 → NT$270
+📦 果倉 x5 → NT$430
+📦 果倉 x10 → NT$850 
+
+📌 下單指令： 如要訂購請說你要訂購的內容並說：送出`
+  };
+
+  // 快捷按鈕關鍵字
+  const quickKeys = Object.keys(productInfo);
+
+  // 防止 F12, 右鍵等開發者工具
+  function disableDevTools() {
+    window.addEventListener('keydown', e => {
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) {
+        e.preventDefault();
+        showDisableAlert('功能已被禁止');
+      }
+    });
+    window.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      showDisableAlert('功能已被禁止');
+    });
+  }
+  function showDisableAlert(msg) {
+    disableAlert.textContent = msg;
+    disableAlert.classList.add('show');
+    setTimeout(() => disableAlert.classList.remove('show'), 2500);
+  }
+
+  // 新增訊息
+  function addMessage(sender, text, type, thinking = false) {
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', type);
+    if(type === 'user') {
+      // user訊息泡泡靠右，文字正常顯示
+      msgDiv.style.direction = 'rtl';
+      msgDiv.style.textAlign = 'right';
+      msgDiv.innerHTML = `<span class="text" style="direction:ltr;">${text}</span>
+      <div class="meta">${sender} • ${new Date().toLocaleTimeString()}</div>`;
+    } else {
+      // bot訊息靠左
+      msgDiv.style.direction = 'ltr';
+      msgDiv.style.textAlign = 'left';
+      if (thinking) {
+        msgDiv.innerHTML = `<span class="thinking">正在思考中...</span>`;
+      } else {
+        msgDiv.innerHTML = `${text}<div class="meta">${sender} • ${new Date().toLocaleTimeString()}</div>`;
+      }
+    }
+    messages.appendChild(msgDiv);
+    messages.scrollTop = messages.scrollHeight;
+    return msgDiv;
+  }
+
+  // 判斷輸入文字回覆
+  function getReply(text) {
+    text = text.toLowerCase();
+    for (const item of responses) {
+      for (const kw of item.keywords) {
+        if (text.includes(kw.toLowerCase())) {
+          return item;
+        }
+      }
+    }
+    return null;
+  }
+
+  // 送Webhook紀錄
+  async function sendDiscordWebhook(username, content) {
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          username: username || '訪客',
+          content: content
+        })
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 快捷按鈕產生
+  function createQuickButtons() {
+    quickButtonsDiv.innerHTML = '';
+    quickKeys.forEach(key => {
+      const btn = document.createElement('button');
+      btn.className = 'quick-btn';
+      btn.textContent = key;
+      btn.title = '點擊查看 ' + key + ' 詳細資訊';
+      btn.addEventListener('click', () => {
+        addMessage('使用者', key, 'user');
+        addBotReply(productInfo[key]);
+      });
+      quickButtonsDiv.appendChild(btn);
+    });
+  }
+
+  // 機器人回覆（含思考動畫）
+  function addBotReply(replyText, sendWebhook = false, userName = '') {
+    const thinkingMsg = addMessage('機器人', '', 'bot', true);
+
+    setTimeout(async () => {
+      thinkingMsg.remove();
+      addMessage('機器人', replyText, 'bot');
+
+      // 如果要送Webhook(通常送出訂單)
+      if (sendWebhook) {
+        const chatLog = Array.from(messages.querySelectorAll('.message')).map(m=>{
+          let sender = m.classList.contains('user') ? '使用者' : '機器人';
+          let content = m.classList.contains('user') ? m.querySelector('.text').textContent : m.childNodes[0].textContent;
+          return `${sender}: ${content}`;
+        }).join('\n');
+
+        const sent = await sendDiscordWebhook(userName, chatLog);
+        if(!sent) addMessage('機器人', '⚠️ 聯絡 Discord Webhook 失敗，請稍後再試！', 'bot');
+      }
+    }, 1200);
+  }
+
+  // 主流程
+  function processInput() {
+    const textRaw = userInput.value.trim();
+    if (!textRaw) return;
+
+    const userNameRaw = usernameInput.value.trim() || '訪客';
+
+    addMessage(userNameRaw, textRaw, 'user');
+    userInput.value = '';
+    sendBtn.disabled = true;
+
+    // 先判斷是否是快捷按鈕命令（直接回覆）
+    if (quickKeys.some(k => textRaw.toLowerCase() === k.toLowerCase())) {
+      addBotReply(productInfo[textRaw], false);
+      return;
+    }
+
+    // 取得回覆
+    const replyObj = getReply(textRaw);
+    if (!replyObj) {
+      addBotReply('抱歉，我無法理解您的訊息，請嘗試其他關鍵字或描述您的需求。');
+      return;
+    }
+
+    // 如果是送出類命令，要送Webhook
+    if(replyObj.webhook){
+      addBotReply(replyObj.reply, true, userNameRaw);
+      return;
+    }
+
+    // 判斷是否為導頁（官網、DC等）
+    const redirectKeys = ['折扣', '優惠', '打折', '折價', '特殊活動', '好康', '抽獎', '抽抽樂', '官網', '官方網站', '轉人工', '找客服','完成','送出'];
+    for(const rk of redirectKeys){
+      if(textRaw.toLowerCase().includes(rk.toLowerCase())){
+        addBotReply(replyObj.reply);
+        // 自動跳轉頁面
+        if(rk === '官網' || rk === '官方網站'|| rk === '提交'|| rk === '送出'){
+          setTimeout(() => window.open('https://goldenstar8787.github.io/auristar-on-line--store-/', '_blank'), 2000);
+        }
+        if(rk === '折扣' || rk === '優惠' || rk === '打折' || rk === '折價' || rk === '特殊活動' || rk === '好康' || rk === '抽獎' || rk === '抽抽樂' || rk === '轉人工' || rk === '找客服'|| rk === '提交'|| rk === '送出'){
+          setTimeout(() => window.open('https://discord.gg/jt4ZvhnCDQ', '_blank'), 2000);
+        }
+        return;
+      }
+    }
+
+    // 一般回覆
+    addBotReply(replyObj.reply);
+  }
+
+  // UI 控制
+  function updateSendBtn() {
+    sendBtn.disabled = userInput.value.trim() === '';
+  }
+
+  // 綁定事件
+  sendBtn.addEventListener('click', processInput);
+  userInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !sendBtn.disabled) {
+      processInput();
+    }
+  });
+  userInput.addEventListener('input', updateSendBtn);
+
+  // 初始化
+  addMessage('系統', welcomeMsg, 'bot');
+  createQuickButtons();
+  disableDevTools();
+  updateSendBtn();
+
+})();
+</script>
+
+</body>
+</html>
