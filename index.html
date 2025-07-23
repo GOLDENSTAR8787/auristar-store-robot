@@ -224,76 +224,81 @@
   // 初始歡迎訊息
   const welcomeMsg = '歡迎來到 Auristar商城 專業人機客服系統，請輸入你的問題或關鍵字.......';
 
-  // 關鍵字與回覆資料
-  const responses = [
-    { keywords: ['嗨', '哈囉', '你好', 'hi', 'hellow', '早安', '午安', '晚安', '安安', '在嗎', '有人嗎'], reply: '您好！請問需要什麼幫助？' },
-    { keywords: ['?', '蝦', '蛤', 'ㄏㄚˊ', '什麼', '聽無', '聽不懂', '不懂', '不太懂', '什麼意思', '看不懂', '搞不懂','幹啥的'], reply: '輸入你的問題來讓我回答，就可以解開你心中的疑惑歐~~' },
-    { keywords: ['買', '購買', '商品', '品項', '價格'], reply: '你想要查詢什麼的價格或是購買什麼東西呢？請說明' },
-    { keywords: ['代購', '代買'], reply: '你想要查詢什麼的代購呢？' },
-    { keywords: ['roblox', 'ROBLOX', 'RB', 'Roblox', 'rb', '羅布克斯'], reply: '你要查詢roblox哪類商品呢？' },
-    { keywords: ['代儲'], reply: '你要哪個遊戲的代儲呢？' },
-    { keywords: ['roblox代儲', 'ROBLOX代儲', 'RB代儲', 'Roblox代儲', 'rb代儲', 'robux'], 
-      reply:
-`如要購買請說：「我要買XXX Robux」並說送出，目前只開放面額如下：
+ // 關鍵字與回覆資料
+const responses = [
+  { keywords: ['嗨', '哈囉', '你好', 'hi', 'hellow', '早安', '午安', '晚安', '安安', '在嗎', '有人嗎'], reply: '您好！請問需要什麼幫助？' },
+  { keywords: ['?', '蝦', '蛤', 'ㄏㄚˊ', '什麼', '聽無', '聽不懂', '不懂', '不太懂', '什麼意思', '看不懂', '搞不懂','幹啥的'], reply: '輸入你的問題來讓我回答，就可以解開你心中的疑惑歐~~' },
+  { keywords: ['買', '購買', '商品', '品項', '價格'], reply: '你想要查詢什麼的價格或是購買什麼東西呢？請說明' },
+  { keywords: ['代購', '代買'], reply: '你想要查詢什麼的代購呢？' },
+  { keywords: ['roblox', 'ROBLOX', 'RB', 'Roblox', 'rb', '羅布克斯'], reply: '你要查詢roblox哪類商品呢？' },
+  { keywords: ['代儲'], reply: '你要哪個遊戲的代儲呢？' },
+
+  // 商品價格
+  { keywords: ['九尾狐'], reply: '九尾狐 ➤ NT$1900，要訂購請說內容並說送出' },
+  { keywords: ['Disco蜂', 'disco蜂'], reply: 'Disco蜂 ➤ NT$400，要訂購請說內容並說送出' },
+  { keywords: ['蝴蝶'], reply: '蝴蝶 ➤ NT$200，要訂購請說內容並說送出' },
+  { keywords: ['女王蜂'], reply: '女王蜂 ➤ NT$150，要訂購請說內容並說送出' },
+  { keywords: ['蜻蜓'], reply: '蜻蜓 ➤ NT$200，要訂購請說內容並說送出' },
+  { keywords: ['浣熊'], reply: '浣熊 ➤ NT$300，要訂購請說內容並說送出' },
+  { keywords: ['浣熊10', '浣熊*10', '浣熊10隻'], reply: '浣熊*10 ➤ NT$2800，要訂購請說內容並說送出' },
+  { keywords: ['狐狸'], reply: '狐狸 ➤ NT$100，要訂購請說內容並說送出' },
+  { keywords: ['殭屍雞'], reply: '殭屍雞 ➤ NT$100，要訂購請說內容並說送出' },
+  { keywords: ['暴龍'], reply: '暴龍 ➤ NT$200，要訂購請說內容並說送出' },
+  { keywords: ['雷龍'], reply: '雷龍 ➤ NT$100，要訂購請說內容並說送出' },
+  { keywords: ['章魚'], reply: '章魚 ➤ NT$200，要訂購請說內容並說送出' },
+  { keywords: ['耳廓狐'], reply: '耳廓狐 ➤ NT$250，要訂購請說內容並說送出' },
+  { keywords: ['月貓'], reply: '月貓 ➤ NT$70，要訂購請說內容並說送出' },
+  { keywords: ['血月刺蝟'], reply: '血月刺蝟 ➤ NT$70，要訂購請說內容並說送出' },
+  { keywords: ['744T植物'], reply: '744T植物 ➤ NT$15，要訂購請說內容並說送出' },
+  { keywords: ['60歲寵'], reply: '60歲寵 ➤ NT$100，要訂購請說內容並說送出' },
+  { keywords: ['75歲寵'], reply: '75歲寵 ➤ NT$150，要訂購請說內容並說送出' },
+
+  // Robux代儲
+  {
+    keywords: ['roblox代儲', 'ROBLOX代儲', 'RB代儲', 'Roblox代儲', 'rb代儲', 'robux'],
+    reply: `如要購買請說：「我要買XXX Robux」並說送出，目前只開放面額如下：
 400 Robux → NT$160
 800 Robux → NT$300
 1700 Robux → NT$600
 2500 Robux → NT$900
 4500 Robux → NT$1450
 10000 Robux → NT$2800
-22500 Robux → NT$5600` 
-    },
-    { keywords: ['培養花園', 'gag', 'GAG', 'grow a garden', 'Grow a garden', 'GROW A GARDEN'], 
-      reply: `
- 🌱 商品列表
+22500 Robux → NT$5600`
+  },
+
+  // GAG商品
+  {
+    keywords: ['培養花園', 'gag', 'GAG', 'grow a garden', 'Grow a garden', 'GROW A GARDEN'],
+    reply: `🌱 商品列表
 📦 EXOTIC ZEN SEED PACK
 x3（575R） ➤ NT$130
-
 x10（1699R） ➤ NT$330
 
 🥚 PREMIUM PRIMAL EGG
 x3（429R） ➤ NT$100
-
 x10（1269R） ➤ NT$250
 
 🐾 PET 寵物專區
 九尾狐 ➤ NT$1900
-
 Disco蜂 ➤ NT$400
-
 蝴蝶 ➤ NT$200
-
 女王蜂 ➤ NT$150
-
 蜻蜓 ➤ NT$200
-
 浣熊 ➤ NT$300      浣熊*10 ➤ NT$2800
-
 狐狸 ➤ NT$100
-
 殭屍雞 ➤ NT$100
-
 暴龍 ➤ NT$200
-
 雷龍 ➤ NT$100
-
 章魚 ➤ NT$200
-
 耳廓狐 ➤ NT$250
-
 月貓 ➤ NT$70
-
 血月刺蝟 ➤ NT$70
-
-
 744T植物 ➤ NT$15
-
-
 60歲寵 ➤ NT$100
-
 75歲寵 ➤ NT$150
 
-如果要購買，請直接照名稱和數量打到聊天室中,並說送出。` },
+如果要購買，請直接照名稱和數量打到聊天室中,並說送出。`
+  },
     { keywords: ['折扣', '優惠', '打折', '折價'], reply: '請見DC群 (轉移頁面到 <a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">https://discord.gg/jt4ZvhnCDQ</a>)' },
 { keywords: ['特殊活動', '好康', '抽獎', '抽抽樂'], reply: '請見DC群 (轉移頁面到 <a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">https://discord.gg/jt4ZvhnCDQ</a>)' },
 { keywords: ['官網', '官方網站'], reply: '將你轉跳到官網 (<a href="https://goldenstar8787.github.io/auristar-on-line--store-/" target="_blank">https://goldenstar8787.github.io/auristar-on-line--store-/</a>)' },
@@ -309,14 +314,6 @@ Disco蜂 ➤ NT$400
 { keywords: ['回報', '我有問題', '提問', '疑問', '疑惑'], reply: '請說明你的問題，說明完成後請說：「送出」' },
 { keywords: ['我要', '我想要','開單', '我要開單','怎麼買', '如何訂購', '要怎麼下單'], reply: '請到訂購區訂購或到DC開單 (<a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">Discord</a> 和 <a href="https://goldenstar8787.github.io/auristar-on-line--store-/" target="_blank">官網</a>)' },
 { keywords: ['再見', '掰掰', '掰'], reply: '感謝你的使用 :3' },
-{ keywords: ['爛', '很爛', '不好用'], reply: '真的嗎？可否告訴我哪裡不滿意，我們會努力改進的（但請不要只會嘴巴哦）' },
-{ keywords: ['假的', '詐騙'], reply: '如果是詐騙，我怎麼還能跟你講話呢XD 有疑慮也可直接找FB金佐陳確認喔' },
-{ keywords: ['你在幹嘛', '你到底在幹嘛'], reply: '正在陪你聊天呀，要不要來點有建設性的問題？😉' },
-{ keywords: ['你會不會做事', '你不會'], reply: '我會做事，但你有沒有提出清楚的問題就是另一回事了耶～' },
-{ keywords: ['廢', '沒用', '幹嘛用的'], reply: '我的存在就是來服務的，但要看你會不會問對問題，不然再厲害的我也幫不了你🙃' },
-{ keywords: ['不專業'], reply: '感謝你的意見，我會改進，也歡迎你來教教我什麼叫「專業」！' },
-{ keywords: ['小學生喔','傻子','唐','低能','智障','白癡','沒腦'], reply: '你媽媽沒生給你腦子嗎？國小生嗎這什麼中二發言 你爸媽管不好你可以讓我管 還背後捅一刀勒 在唐什麼 可不可以講話不要跟啞巴一樣 我說10句你只會說一句 沒學好說話你要嗆人找啞巴好了 哪怕是個老奶奶講幾句你都快要哭了 別人罵完發現你字才打到一半 你就只會呃呃呃呃閉嘴呃呃呃滾說你國小都高看你了 能不能說有殺傷力的啊 還是你國小老師只教你這個好可憐喔要不要爸爸教你' },
-{ keywords: ['ha', '哈'], reply: 'hahahahahahahahahahahahahahahahahaha' },
 { keywords: ['條款', '訂購注意事項', '訂購前注意事項', '下單注意事項', '下單前注意事項'], reply: '自行轉跳到 <a href="https://goldenstar8787.github.io/Mall-Terms/" target="_blank">https://goldenstar8787.github.io/Mall-Terms/</a>' },
   { keywords: ['帥', '騷', '美', '可愛', '漂亮', '結婚', '男朋友', '女朋友','吃我'], reply: '真的好臭' },
   { keywords: ['怎麼沒', '好吧', '痾','好喔'], reply: '抱歉，開發中，可考慮轉人工' },
@@ -346,9 +343,17 @@ Disco蜂 ➤ NT$400
   { keywords: ['噁心', '討厭', '髒東西'], reply: ['你這樣說自己還不反省？', '討厭是會傳染的，你確定你沒中？'] },
   { keywords: ['腦袋壞掉', '笨蛋', '腦殘粉'], reply: ['你的腦袋是不是進水了？', '多用用腦子，少用嘴巴。'] },
   { keywords: ['死丫頭', '死臭蟲'], reply: ['這麼說人家，是不是怕人家變成真的？', '愛罵人，但不敢當面，勇氣呢？'] },
-  { keywords: ['二百五', '白癡蛋'], reply: ['二百五的傳說由你繼續書寫中。', '聽起來你比他還慘。'] }
-  ];
+  { keywords: ['二百五', '白癡蛋'], reply: ['二百五的傳說由你繼續書寫中。', '聽起來你比他還慘。'] },
+  { keywords: ['爛', '很爛', '不好用'], reply: '真的嗎？可否告訴我哪裡不滿意，我們會努力改進的（但請不要只會嘴巴哦）' },
+{ keywords: ['假的', '詐騙'], reply: '如果是詐騙，我怎麼還能跟你講話呢XD 有疑慮也可直接找FB金佐陳確認喔' },
+{ keywords: ['你在幹嘛', '你到底在幹嘛'], reply: '正在陪你聊天呀，要不要來點有建設性的問題？😉' },
+{ keywords: ['你會不會做事', '你不會'], reply: '我會做事，但你有沒有提出清楚的問題就是另一回事了耶～' },
+{ keywords: ['廢', '沒用', '幹嘛用的'], reply: '我的存在就是來服務的，但要看你會不會問對問題，不然再厲害的我也幫不了你🙃' },
+{ keywords: ['不專業'], reply: '感謝你的意見，我會改進，也歡迎你來教教我什麼叫「專業」！' },
+{ keywords: ['小學生喔','傻子','唐','低能','智障','白癡','沒腦'], reply: '你媽媽沒生給你腦子嗎？國小生嗎這什麼中二發言 你爸媽管不好你可以讓我管 還背後捅一刀勒 在唐什麼 可不可以講話不要跟啞巴一樣 我說10句你只會說一句 沒學好說話你要嗆人找啞巴好了 哪怕是個老奶奶講幾句你都快要哭了 別人罵完發現你字才打到一半 你就只會呃呃呃呃閉嘴呃呃呃滾說你國小都高看你了 能不能說有殺傷力的啊 還是你國小老師只教你這個好可憐喔要不要爸爸教你' },
+{ keywords: ['ha', '哈'], reply: 'hahahahahahahahahahahahahahahahahaha' }  //從這開始改
 
+  ];
   // 商品資訊（快捷按鈕及回覆）
   const productInfo = {
     'Robux 面額': `💰 Robux 面額（常見購買額度）
