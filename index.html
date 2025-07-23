@@ -234,7 +234,7 @@
     { keywords: ['代儲'], reply: '你要哪個遊戲的代儲呢？' },
     { keywords: ['roblox代儲', 'ROBLOX代儲', 'RB代儲', 'Roblox代儲', 'rb代儲', 'robux'], 
       reply:
-`如要購買請說：「我要買XXX Robux」，目前只開放面額如下：
+`如要購買請說：「我要買XXX Robux」並說送出，目前只開放面額如下：
 400 Robux → NT$160
 800 Robux → NT$300
 1700 Robux → NT$600
@@ -293,24 +293,33 @@ Disco蜂 ➤ NT$400
 
 75歲寵 ➤ NT$150
 
-如果要購買，請直接照名稱和數量打到聊天室中。` },
+如果要購買，請直接照名稱和數量打到聊天室中,並說送出。` },
     { keywords: ['折扣', '優惠', '打折', '折價'], reply: '請見DC群 (轉移頁面到 <a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">https://discord.gg/jt4ZvhnCDQ</a>)' },
 { keywords: ['特殊活動', '好康', '抽獎', '抽抽樂'], reply: '請見DC群 (轉移頁面到 <a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">https://discord.gg/jt4ZvhnCDQ</a>)' },
 { keywords: ['官網', '官方網站'], reply: '將你轉跳到官網 (<a href="https://goldenstar8787.github.io/auristar-on-line--store-/" target="_blank">https://goldenstar8787.github.io/auristar-on-line--store-/</a>)' },
 { keywords: ['轉人工', '找客服'], reply: '請到DC群開單或FB找金佐陳詢問 (<a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">Discord</a> / <a href="https://www.facebook.com/jin.zuo.chen.2025" target="_blank">Facebook</a>)' },
-{ keywords: ['談合作', '合作'], reply: '請說明你要合作什麼，並提供你的商城名稱，說明完畢後請說「送出」，並到DC開單詢問' },
+{ keywords: ['談合作', '合作', '招商'], reply: '請說明你目前經營的平台名稱及合作想法,說明完畢後請說「送出」，並到DC開單詢問' },
 { keywords: ['互相宣傳'], reply: '請詳細說明，說明完畢後請說「送出」，並到DC開單詢問' },
+{ keywords: ['有人嗎', '有人在嗎'], reply: '嗨～我們有自動客服陪你聊天喔，有問題可以直接問！' },
+{ keywords: ['機器人', '自動'], reply: '是的～我們的自動客服能幫你處理基本問題～' },
+{ keywords: ['你是誰', '你哪位','你誰'], reply: '我是Auristar自動小幫手，有任何問題都可以問我唷！' },
 { keywords: ['說明完畢', '送出', '完成'], reply: '紀錄已送出 將轉移頁面到 <a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">https://discord.gg/jt4ZvhnCDQ</a>)', webhook: true },
-{ keywords: ['應徵', '面試', '代理', '徵人'], reply: '請說你的名字，和有無經驗，有經驗請說有經驗，無經驗請說無經驗' },
+{ keywords: ['應徵', '面試', '代理', '徵人','怎麼加入', '我要加入'], reply: '請說你的名字，和有無經驗，有經驗請說有經驗，無經驗請說無經驗' },
 { keywords: ['有經驗', '無經驗'], reply: '請說你的年齡，能不能常發文，是否有誠文？回答完成請說「完成」' },
 { keywords: ['回報', '我有問題', '提問', '疑問', '疑惑'], reply: '請說明你的問題，說明完成後請說：「送出」' },
-{ keywords: ['我要', '我想要'], reply: '請到訂購區訂購或到DC開單 (<a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">Discord</a> 和 <a href="https://goldenstar8787.github.io/auristar-on-line--store-/" target="_blank">官網</a>)' },
+{ keywords: ['我要', '我想要','開單', '我要開單','怎麼買', '如何訂購', '要怎麼下單'], reply: '請到訂購區訂購或到DC開單 (<a href="https://discord.gg/jt4ZvhnCDQ" target="_blank">Discord</a> 和 <a href="https://goldenstar8787.github.io/auristar-on-line--store-/" target="_blank">官網</a>)' },
 { keywords: ['再見', '掰掰', '掰'], reply: '感謝你的使用 :3' },
+{ keywords: ['爛', '很爛', '不好用'], reply: '真的嗎？可否告訴我哪裡不滿意，我們會努力改進的（但請不要只會嘴巴哦）' },
+{ keywords: ['假的', '詐騙'], reply: '如果是詐騙，我怎麼還能跟你講話呢XD 有疑慮也可直接找FB金佐陳確認喔' },
+{ keywords: ['你在幹嘛', '你到底在幹嘛'], reply: '正在陪你聊天呀，要不要來點有建設性的問題？😉' },
+{ keywords: ['你會不會做事', '你不會'], reply: '我會做事，但你有沒有提出清楚的問題就是另一回事了耶～' },
+{ keywords: ['廢', '沒用', '幹嘛用的'], reply: '我的存在就是來服務的，但要看你會不會問對問題，不然再厲害的我也幫不了你🙃' },
+{ keywords: ['不專業'], reply: '感謝你的意見，我會改進，也歡迎你來教教我什麼叫「專業」！' },
 { keywords: ['小學生喔','傻子','唐','低能','智障','白癡','沒腦'], reply: '你媽媽沒生給你腦子嗎？國小生嗎這什麼中二發言 你爸媽管不好你可以讓我管 還背後捅一刀勒 在唐什麼 可不可以講話不要跟啞巴一樣 我說10句你只會說一句 沒學好說話你要嗆人找啞巴好了 哪怕是個老奶奶講幾句你都快要哭了 別人罵完發現你字才打到一半 你就只會呃呃呃呃閉嘴呃呃呃滾說你國小都高看你了 能不能說有殺傷力的啊 還是你國小老師只教你這個好可憐喔要不要爸爸教你' },
 { keywords: ['ha', '哈'], reply: 'hahahahahahahahahahahahahahahahahaha' },
 { keywords: ['條款', '訂購注意事項', '訂購前注意事項', '下單注意事項', '下單前注意事項'], reply: '自行轉跳到 <a href="https://goldenstar8787.github.io/Mall-Terms/" target="_blank">https://goldenstar8787.github.io/Mall-Terms/</a>' },
-  { keywords: ['帥', '騷', '美', '可愛', '漂亮', '結婚', '男朋友', '女朋友'], reply: '真的好臭' },
-  { keywords: ['怎麼沒', '好吧', '痾'], reply: '抱歉，開發中，可考慮轉人工' },
+  { keywords: ['帥', '騷', '美', '可愛', '漂亮', '結婚', '男朋友', '女朋友','吃我'], reply: '真的好臭' },
+  { keywords: ['怎麼沒', '好吧', '痾','好喔'], reply: '抱歉，開發中，可考慮轉人工' },
   { keywords: ['幹', '靠北'], reply: ['你是不是沒吃藥？', '嘴巴這麼臭，牙齒還好嗎？'] },
   { keywords: ['垃圾', '婊子', '你嗎逼'], reply: ['先照照鏡子再來吵好嗎？', '講這種話不會覺得丟臉嗎？'] },
   { keywords: ['你媽', '媽的', '死', '操你嗎'], reply: ['嘴巴這麼臭，牙齒還好嗎？', '你是不是沒朋友所以在這邊吵？'] },
@@ -322,10 +331,10 @@ Disco蜂 ➤ NT$400
   { keywords: ['你媽', '死媽', '媽的', '你娘'], reply: ['不准扯家人，吵輸才會扯人家媽媽。', '吵不過就罵媽，幼稚園畢業了沒？'] },
   { keywords: ['死', '去死', '死全家', '早死'], reply: ['你活著都沒什麼用，別詛咒別人。', '咒人死前先照照自己有多失敗。'] },
   { keywords: ['三小', '殺小', '沙小', '啥小'], reply: ['講不出完整的句子只會「三小」？', '你是不是詞窮了？'] },
-  { keywords: ['機掰', '雞掰', '雞巴', '雞歪'], reply: ['嘴巴別再長那部位了，好嗎？', '說這種話，你爸媽知道嗎？'] },
+  { keywords: ['機掰', '雞掰', '雞巴', '雞歪','懶叫'], reply: ['嘴巴別再長那部位了，好嗎？', '說這種話，你爸媽知道嗎？'] },
   { keywords: ['娘砲', '臭甲', '娘娘腔'], reply: ['歧視別人不會讓你更有種。', '講這種話只顯得你沒自信。'] },
   { keywords: ['閉嘴', '滾', '屁話'], reply: ['你不說話大家會感謝你。', '你有話想講，請先學怎麼講。'] },
-  { keywords: ['北七', '八嘎', '阿呆', '蠢'], reply: ['你這智商該繳低收入戶申請。', '連 Google 都搜不到你的邏輯。'] }
+  { keywords: ['北七', '八嘎', '阿呆', '蠢','閉嘴'], reply: ['你這智商該繳低收入戶申請。', '連 Google 都搜不到你的邏輯。'] }
   ];
 
   // 商品資訊（快捷按鈕及回覆）
